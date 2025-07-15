@@ -43,7 +43,7 @@ ___TEMPLATE_PARAMETERS___
     "name": "cookiePrefix",
     "displayName": "Cookie Prefix",
     "simpleValueType": true,
-    "valueHint": "Prefix for cookie value (e.g., fb)"
+    "valueHint": "Prefix for cookie value (e.g., fb.1.)"
   },
   {
     "type": "TEXT",
@@ -166,7 +166,9 @@ if (clickIdValue) {
     }
 }
 
+
 logToConsole('Returning cookie:', cookieValue);
+
 return cookieValue || '';
 
 
@@ -294,6 +296,6 @@ scenarios: []
 
 ___NOTES___
 
-Created on 16/07/2025, 00:20:42
+Created on 16/07/2025, 00:40:50
 
 
