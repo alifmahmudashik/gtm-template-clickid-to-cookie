@@ -1,4 +1,4 @@
-homepage: "https://alifmahmud.com/"
-versions:
-  - sha: 57b747acbf9bc6dc6362868a4e5340e82a31ffd1
-    changeNotes: Initial release.
+homepage: "https://alifmahmud.com"
+versions: 
+  - sha: <latest commit SHA>
+    changeNotes: Added dynamic prefix support and simplified structure.

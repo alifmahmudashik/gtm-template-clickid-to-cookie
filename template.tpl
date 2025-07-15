@@ -28,19 +28,29 @@ ___TEMPLATE_PARAMETERS___
     "type": "TEXT",
     "name": "pageLocation",
     "displayName": "Page Location",
-    "simpleValueType": true
+    "simpleValueType": true,
+    "valueHint": "https://alifmahmud.com/?fbclid\u003d123\u0026utm_source\u003dfacebook\u0026gclid\u003dEXAMPLE-GCLID\u0026tclid\u003dEXAMPLE-TCLID\u0026ttclid\u003dEXAMPLE-TTCLID\u0026obclid\u003dEXAMPLE-OBCLID\u0026msclkid\u003dEXAMPLE-MSCLKID\u0026gtm_debug\u003d1752601558961"
   },
   {
     "type": "TEXT",
     "name": "clickId",
     "displayName": "Click ID",
-    "simpleValueType": true
+    "simpleValueType": true,
+    "valueHint": "Parameter name (e.g., fbclid)"
+  },
+  {
+    "type": "TEXT",
+    "name": "cookiePrefix",
+    "displayName": "Cookie Prefix",
+    "simpleValueType": true,
+    "valueHint": "Prefix for cookie value (e.g., fb)"
   },
   {
     "type": "TEXT",
     "name": "cookieName",
     "displayName": "Cookie Name",
-    "simpleValueType": true
+    "simpleValueType": true,
+    "valueHint": "Cookie name (e.g., _fbc)"
   },
   {
     "type": "RADIO",
@@ -105,14 +115,14 @@ const logToConsole = require('logToConsole');
 const makeNumber = require('makeNumber');
 const getTimestamp = require('getTimestamp');
 
-const pageLocation = data.pageLocation; // Full URL must come from this variable.
-const clickId = data.clickId;
-const cookieName = data.cookieName; // This must be just the cookie name, not a URL.
+const pageLocation = data.pageLocation;   // Full URL with query parameters
+const clickIdParam = data.clickId;        // Query parameter name (e.g., fbclid, gclid)
+const cookieName = data.cookieName;       // Cookie name (e.g., _fbc, _gcl_au)
+const cookiePrefix = data.cookiePrefix;   // Prefix for value (e.g., fb.1., gcl.1.)
 
 const cookieLifetimeOption = data.cookieLifetime;
-let days = 90; // Default to 90 days
+let days = 90; // Default 90 days
 
-// Determine expiry days
 if (cookieLifetimeOption === 'cookieLifeTimeStandard') {
     if (data.standardDays === 'sevenDays') days = 7;
     if (data.standardDays === 'fifteenDays') days = 15;
@@ -122,7 +132,7 @@ if (cookieLifetimeOption === 'cookieLifeTimeStandard') {
     days = makeNumber(data.customDays) || 90;
 }
 
-const expiryMs = days * 24 * 60 * 60 * 1000;
+const expirySeconds = days * 24 * 60 * 60;
 
 function getQueryParam(url, key) {
     const queryString = url.split('?')[1] || '';
@@ -136,15 +146,14 @@ function getQueryParam(url, key) {
     return null;
 }
 
-const fbcParam = getQueryParam(pageLocation, clickId);
-
+const clickIdValue = getQueryParam(pageLocation, clickIdParam);
 let cookieValue;
 
-if (fbcParam) {
-    cookieValue = 'fb.1.' + getTimestamp() + '.' + fbcParam;
+if (clickIdValue) {
+    cookieValue = cookiePrefix + getTimestamp() + '.' + clickIdValue;
     setCookie(cookieName, cookieValue, {
         path: '/',
-        'max-age': expiryMs / 1000
+        'max-age': expirySeconds
     });
 } else {
     const existingCookie = getCookieValues(cookieName)[0];
@@ -152,7 +161,7 @@ if (fbcParam) {
         cookieValue = existingCookie;
         setCookie(cookieName, existingCookie, {
             path: '/',
-            'max-age': expiryMs / 1000
+            'max-age': expirySeconds
         });
     }
 }
@@ -285,6 +294,6 @@ scenarios: []
 
 ___NOTES___
 
-Created on 15/07/2025, 23:54:56
+Created on 16/07/2025, 00:20:42
 
 
