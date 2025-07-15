@@ -1,4 +1,4 @@
 homepage: "https://alifmahmud.com"
 versions: 
-  - sha: db0305f291c6d4ad94f044904901ca9b7d80eb7b
+  - sha: 786565f0290b943976ba6e8c865832c6732306d9
     changeNotes: Added dynamic prefix support and simplified structure.
